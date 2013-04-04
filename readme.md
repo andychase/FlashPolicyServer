@@ -4,32 +4,30 @@ FINALLY a blazing fast, simple C Flash Policy server for a simple problem with e
 
 ## How fast? 
 
-    Concurrency Level:      10
-    Time taken for tests:   4.953 seconds
-    Complete requests:      31658
+    Concurrency Level:      1
+    Time taken for tests:   28.226 seconds
+    Complete requests:      100000
     Failed requests:        0
     Write errors:           0
-    Total transferred:      7914500 bytes
+    Total transferred:      25000000 bytes
     HTML transferred:       0 bytes
-    Requests per second:    6391.32 [#/sec] (mean)
-    Time per request:       1.565 [ms] (mean)
-    Time per request:       0.156 [ms] (mean, across all concurrent requests)
-    Transfer rate:          1560.38 [Kbytes/sec] received
-    
+    Requests per second:    3542.88 [#/sec] (mean)
+    Time per request:       0.282 [ms] (mean)
+    Time per request:       0.282 [ms] (mean, across all concurrent requests)
+    Transfer rate:          864.96 [Kbytes/sec] received
     
     
     Concurrency Level:      1000
-    Time taken for tests:   23.792 seconds
-    Complete requests:      7875
+    Time taken for tests:   80.562 seconds
+    Complete requests:      33157
     Failed requests:        0
-    Write errors:           0
-    Total transferred:      1975000 bytes
+    Write errors:           2
+    Total transferred:      8455500 bytes
     HTML transferred:       0 bytes
-    Requests per second:    330.99 [#/sec] (mean)
-    Time per request:       3021.252 [ms] (mean)
-    Time per request:       3.021 [ms] (mean, across all concurrent requests)
-    Transfer rate:          81.06 [Kbytes/sec] received
-
+    Requests per second:    411.57 [#/sec] (mean)
+    Time per request:       2429.701 [ms] (mean)
+    Time per request:       2.430 [ms] (mean, across all concurrent requests)
+    Transfer rate:          102.50 [Kbytes/sec] received
 
 ## Installation
 
