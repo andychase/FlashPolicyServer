@@ -3,12 +3,13 @@
 #include <errno.h>
 #include <sys/socket.h>
 #include <pthread.h>
+#include <string.h>
 
 #define MY_PORT     843
 #define MAXBUF      1028
-#define NUM_THREADS     2
+#define NUM_THREADS     1
 
-int pipes[1][2];
+int pipes[NUM_THREADS][2];
 int sockfd;
 
 const char *policy =
@@ -19,8 +20,9 @@ const char *policy =
 "<allow-access-from domain=\"*\" to-ports=\"*\" />\n</cross-domain-policy>\r\n";
 
 void *SendPolicy(void *threadid) {
-   int ok, clientfd;
-   long tid;
+   int clientfd;
+   int policy_size = strlen(policy);
+   int tid;
    char buffer[MAXBUF];
    tid = (long) threadid;
    while(1) {
@@ -28,10 +30,10 @@ void *SendPolicy(void *threadid) {
     read(pipes[tid][0], &clientfd, sizeof(int), 0);
 
     /* --- Recieve --- */
-    recv(clientfd, buffer, 128, 0);
+    recv(clientfd, buffer, MAXBUF, 0);
 
     /* --- Send --- */
-    send(clientfd, &policy, 250, 0);
+    send(clientfd, policy, policy_size, 0);
 
     /* --- Close ---*/
     close(clientfd);
@@ -43,20 +45,21 @@ int main(int argc, char *argv[]) {
     pthread_t threads[NUM_THREADS];
     int t;
     for(t=0; t<NUM_THREADS; t++) {
-    	pipe(pipes[t]); // <- Create pipes for sending clients
+       pipe(pipes[t]); // <- Create pipes for sending clients
     	pthread_create(&threads[t], NULL, SendPolicy, (void *)t);
     }
 
     /* --- Create streaming socket --- */
     if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)  {
-    	perror("Socket");
-    	return 1;
+    perror("Socket");
+    return 1;
     }
 
     /* --- Initialize address/port structure --- */
     struct sockaddr_in self;
     self.sin_family = AF_INET;
     self.sin_port = htons(MY_PORT);
+    self.sin_addr.s_addr = 0;
     self.sin_addr.s_addr = INADDR_ANY;
     self.sin_family = AF_INET;
 
@@ -94,3 +97,4 @@ int main(int argc, char *argv[]) {
     pthread_exit(NULL);
     return 0;
 }
+
